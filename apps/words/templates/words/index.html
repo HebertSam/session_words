@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    {% load static %}
+</head>
+<body>
+    <h1>Add a new word</h1>
+    <form action="/process" method="post">
+        {% csrf_token %}
+        <input type="text" name="word">
+        <label for="color">Choose a color</label>
+        <input type="radio" name="color" value="red"> Red
+        <input type="radio" name="color" value="green"> Green
+        <input type="radio" name="color" value="blue"> Blue
+        <input type="checkbox" name="big"> show in BIG fonts!
+        <button type="submit">Add to Session</button>
+    </form>
+     {% for data in request.session.data %}
+        {% if data.color == 'red' and data.big == 'off' %}
+            <span style="color:red; font-size:20px;">{{data.thing}}</span>
+        {% elif data.color == 'green' and data.big == 'off' %}
+            <span style="color:green; font-size:20px;">{{data.thing}}</span>
+        {% elif data.color == 'blue' and data.big == 'off' %}
+            <span style="color:blue; font-size:20px;">{{data.thing}}</span>
+        {% elif data.color == 'red' and data.big == 'on' %}
+            <span style="color:red; font-size:40px;">{{data.thing}}</span>
+        {% elif data.color == 'green' and data.big == 'on' %}
+            <span style="color:green; font-size:40px;">{{data.thing}}</span>
+        {% elif data.color == 'blue' and data.big == 'on' %}
+            <span style="color:blue; font-size:40px;">{{data.thing}}</span>
+        {% endif %}
+        <span>added on {{data.time}}</span><br>
+    {% endfor %}
+    <a href="/reset">Clear Session</a>
+
+</body>
+</html>
